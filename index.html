@@ -30,8 +30,6 @@
     var SCALAR = 0;
     var OS = "";
 
-
-
     document.addEventListener("deviceready",function(){
         device = true;
 
@@ -172,8 +170,10 @@
 
         var updateWindow = function(){
 
-            // if (gw.xRight <= game.width && gw.xLeft <= 0)
-                this.x += -1*(accel.x * 10) + (offset.x * 10);
+            if (gw.xRight <= game.width && gw.xLeft <= 0){
+                gw.xLeft += -1*(accel.x * 10) + (offset.x * 10);
+                gw.xRight += -1*(accel.x * 10) + (offset.x * 10);
+            }
         }
 
         game.update = function(){

@@ -170,9 +170,9 @@
 
         var updateWindow = function(){
 
-            if (gw.xRight <= game.width && gw.xLeft <= 0){
-                gw.xLeft += -1*(accel.x * 10) + (offset.x * 10);
-                gw.xRight += -1*(accel.x * 10) + (offset.x * 10);
+            if (gw.xRight <= game.width && gw.xLeft >= 0-gw.width){
+                gw.xLeft += -1*(accel.x * 5) + (offset.x * 5);
+                gw.xRight += -1*(accel.x * 5) + (offset.x * 5);
             }
 
             if (gw.xLeft > 0){

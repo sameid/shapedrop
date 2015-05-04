@@ -31,6 +31,7 @@ Shape.prototype.draw = function(ctx){
 
 Shape.prototype.move = function(){
 	this.y += this.speed;
+	this.x = (Math.sin(this.y/100) *100);
 }
 
 Shape.prototype.isOutside = function(){

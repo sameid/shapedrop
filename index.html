@@ -136,6 +136,10 @@
         }
 
 
+        var avoid = function(){
+
+        }
+
         var randomFloat = function(min, max)
         {
             return min + Math.random()*(max-min);
@@ -160,6 +164,7 @@
                 height: 100,
                 speed: 4
             }
+
         }
 
         var drawWindow = function(){
@@ -197,6 +202,27 @@
 
         }
 
+        var isVerticleCollision = function(r1, r2){
+
+            if (r1.type == "1")
+                if (r1.y + r1.height-10 > r2.yGeneral && r1.y + r1.height-10 < r2.yGeneral +r2.height) return true;
+            // else (r1.type == "2")
+                // if (r1.y + r1.radius > r2.yGeneral && r1.y + r1.radius < r2.yGeneral +r2.height) return true;
+                
+            return false;
+        }
+
+        var isHorizontalCollision = function (r1, r2){
+
+            if (r1.type == "1")
+                if (r1.x > r2.xLeft+r2.width && r1.x + r1.width < r2.xRight ) return true;
+            // else (r1.type == "2")
+                // if (r1.x - r1.radius > r2.xLeft && r1.x + r1.radius < r2.xRight) return true;
+
+            return false
+        }
+
+
         game.update = function(){
             shapeStack.forEach(function(shape, index, array){
                 shape.move();
@@ -204,6 +230,22 @@
                     delete array[index];
                     console.log("shape deleted");
                 }
+
+                if(isVerticleCollision(shape, gw)){
+
+                    if (isHorizontalCollision(shape, gw) ){
+
+                        console.log("point");
+                        score++;
+
+                    }else {
+                        console.log("collision");
+                    }
+                }
+
+
+
+
             });
 
             updateWindow();

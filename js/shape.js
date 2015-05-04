@@ -21,7 +21,9 @@ Shape.prototype.draw = function(ctx){
 	ctx.fillStyle = this.colors[this.color];
 
 	if (this.type == "1"){
+		// ctx.rotate(20*Math.PI/180);
 		ctx.fillRect(this.x,this.y,this.width,this.height);
+
 	}
 	else if (this.type == "2"){
 		ctx.beginPath();

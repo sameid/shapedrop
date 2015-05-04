@@ -170,19 +170,29 @@
 
         var updateWindow = function(){
 
-            if (gw.xRight <= game.width && gw.xLeft >= 0-gw.width){
+            if (gw.xLeft >= 0-gw.width && gw.xLeft <= 0){
                 gw.xLeft += -1*(accel.x * 5) + (offset.x * 5);
+            }
+
+            if (gw.xRight >= game.width - gw.width && gw.xRight <= game.width){
                 gw.xRight += -1*(accel.x * 5) + (offset.x * 5);
             }
 
+
             if (gw.xLeft > 0){
                 gw.xLeft = 0;
+            }
+            else if (gw.xLeft < 0-gw.width){
+                gw.xLeft = 0-gw.width;
+                
             }
 
             if (gw.xRight < game.width - gw.width){
                 gw.xRight = game.width - gw.width;
             }
-
+            else if (gw.xRight > game.width){
+                gw.xRight = game.width;
+            }
 
         }
 

@@ -104,7 +104,7 @@
 
             gameWindowInit();
 
-            setInterval(createShape, 2000);
+            game.generateShapes = setInterval(createShape, 2000);
 
             setTimeout(function(){
                 game.id = setInterval(game.loop, 1000 / 60);
@@ -252,8 +252,11 @@
                 }
 
                 if (collision(gw, shape)){
-                    console.log("collision with left");
-                    delete array[index];
+
+                    // delete array[index];
+                    //do some cool explosion
+                    console.log("game over");
+                    game.stop();
                 }
 
             });
@@ -289,18 +292,19 @@
             console.log("game stopped");
 
             clearInterval(game.id);
+            clearInterval(game.generateShapes);
 
             var endGameId = setInterval(game.endGame, 1000/60);
 
 
 
             $("#taunt").empty();
-            $("#taunt").append(taunts[Math.floor(Math.random()*taunts.length)]);
+            $("#taunt").append("GAME OVER");
+            // $("#taunt").append(taunts[Math.floor(Math.random()*taunts.length)]);
             $("#score").empty();
-            $("#score").append("SCORE: " + score + "<br> BEST: " + highScore);
+            // $("#score").append("SCORE: " + score + "<br> BEST: " + highScore);
 
             setTimeout(function(){
-
                 clearInterval(endGameId);
                 score=0;
                 changeState(states.GAME_OVER);

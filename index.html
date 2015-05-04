@@ -202,24 +202,17 @@
 
         }
 
-        var isVerticleCollision = function(r1, r2){
+        var collision = function(r1, r2){
+            if (r1.xLeft < r2.x + r2.width &&
+                r1.xLeft + r1.width > r2.x &&
+                r1.yGeneral < r2.y + r2.height &&
+                r1.height + r1.yGeneral > r2.y){
+                return true;
 
-            if (r1.type == "1")
-                if (r1.y + r1.height-10 > r2.yGeneral && r1.y + r1.height-10 < r2.yGeneral +r2.height) return true;
-            // else (r1.type == "2")
-                // if (r1.y + r1.radius > r2.yGeneral && r1.y + r1.radius < r2.yGeneral +r2.height) return true;
-                
+            }
+
             return false;
-        }
 
-        var isHorizontalCollision = function (r1, r2){
-
-            if (r1.type == "1")
-                if (r1.x > r2.xLeft+r2.width && r1.x + r1.width < r2.xRight ) return true;
-            // else (r1.type == "2")
-                // if (r1.x - r1.radius > r2.xLeft && r1.x + r1.radius < r2.xRight) return true;
-
-            return false
         }
 
 
@@ -231,16 +224,9 @@
                     console.log("shape deleted");
                 }
 
-                if(isVerticleCollision(shape, gw)){
+                if (collision(gw, shape)){
+                    console.log("collision with left");
 
-                    if (isHorizontalCollision(shape, gw) ){
-
-                        console.log("point");
-                        score++;
-
-                    }else {
-                        console.log("collision");
-                    }
                 }
 
 

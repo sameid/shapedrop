@@ -20,17 +20,13 @@ var Shape = function (){
 	this.color = this.colors[Math.floor(0 + Math.random()*(3-0))]
 
 	 this.horizontalStretch = randomInt(200, 300);
-
-
 }
 
 
 Shape.prototype.draw = function(ctx){
 
 	ctx.fillStyle = this.color
-
 	// ctx.rotate(20*Math.PI/180);
-
     ctx.shadowColor = 'black';
     // ctx.shadowBlur = 5;
     // ctx.shadowOffsetX = 0;

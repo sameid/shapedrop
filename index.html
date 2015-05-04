@@ -125,10 +125,10 @@
 
         c.on("touchstart", function(e){
 
-            character.x = game.width/2;
-            character.y = game.height/2;
             offset.x = accel.x;
             offset.y = accel.y;
+            
+            gameWindowInit();
             
         })
 

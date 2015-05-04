@@ -6,7 +6,7 @@ var Shape = function (){
 	this.x = 0;
 	this.y = -100;
 
-	this.x = Math.floor(0 + Math.random()*(game.width-this.width-0));
+	this.push = Math.floor(0 + Math.random()*(game.width-this.width-0));
 
 
 	this.colors = ["#80FF72", "#FFF07C", "#7EE8FA"];
@@ -31,7 +31,7 @@ Shape.prototype.draw = function(ctx){
 
 Shape.prototype.move = function(){
 	this.y += this.speed;
-	this.x = (Math.sin(this.y/100) *100);
+	this.x = (Math.sin(this.y/100) *100) + this.push;
 }
 
 Shape.prototype.isOutside = function(){

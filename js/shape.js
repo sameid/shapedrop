@@ -37,5 +37,5 @@ Shape.prototype.move = function(){
 }
 
 Shape.prototype.isOutside = function(){
-	return this.y > game.height+100;
+	return this.y > gw.yGeneral+gw.height;
 }

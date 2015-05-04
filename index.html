@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta id="viewport" name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <title>Shape Drop</title>
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+    </head>
+
+    
+    <script src="cordova.js"></script>
+    <script src="lib/zepto.min.js"></script>
+    <script src="lib/moment.min.js"></script>
+    <script src="lib/underscore.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/shape.js"></script>
+    <script>
+
+    var device = false;
+
+
+    var accel = {};
+    accel.x=0;
+    accel.y=0
+
+    var SCALAR = 0;
+    var OS = "";
+
+
+
+    document.addEventListener("deviceready",function(){
+        device = true;
+
+
+    }, false);
+
+
+    Zepto(function($){
+        window.onload = function(){
+
+        var enemyDeath = document.getElementById("sound-death");
+
+        // getCurrentBuild(function(data){
+        //     var date = moment(data.date).format('MMMM Do YYYY, h:mm a');
+        //     $("#build").append("Version Rev"+ data.version + " (alpha) <br> Last updated " + date + "<br> Build: " + data.message );
+        // })
+
+        // OS = getOS(); 
+
+
+        var COLORS = {
+            BG: "#EEC0C6",
+            CHARACTER: "#2980b9",
+            ENEMY: "#2ecc71"
+        }
+
+        var states = {
+            GAME: 0,
+            GAME_OVER: 1,
+            MAIN_MENU: 2
+        }
+
+        var shapeStack = [];
+
+        var score = 0;
+
+        var game = {};
+
+        var c = $("#game");
+
+        var offset = {
+            x:0,
+            y:0,
+            z:0         
+        }
+
+        var ctx = c.get(0).getContext("2d");
+
+        game.start = function(){
+            console.log("game started");
+            console.log(OS);
+
+            ctx.imageSmoothingEnabled = false; 
+
+            game.height =  document.documentElement.clientHeight;
+            game.width =  document.documentElement.clientWidth;
+
+            // game.height = window.innerHeight * window.devicePixelRatio;
+            // game.width = window.innerWidth * window.devicePixelRatio;
+
+            SCALAR = game.height;
+
+            console.log(SCALAR, game.width);
+
+            c.attr("width", game.width);
+            c.attr("height", game.height);
+            c.css('background-color', COLORS.BG);
+            c.css('left', '0');
+
+            offset.x = accel.x;
+            offset.y = accel.y;
+
+            gameWindowInit();
+
+            setInterval(createShape, 2000);
+
+            setTimeout(function(){
+                game.id = setInterval(game.loop, 1000 / 60);
+            }, 300);
+
+        }
+
+
+        c.on("touchstart", function(e){
+
+            character.x = game.width/2;
+            character.y = game.height/2;
+            offset.x = accel.x;
+            offset.y = accel.y;
+            
+        })
+
+
+        window.ondevicemotion = function(event) {  
+            accel.x = event.accelerationIncludingGravity.x;  
+            accel.y = event.accelerationIncludingGravity.y;  
+            // var accelerationZ = event.accelerationIncludingGravity.z;  
+        }  
+
+
+
+        var createShape = function(){
+            shapeStack.push(new Shape());
+        }
+
+
+        var randomFloat = function(min, max)
+        {
+            return min + Math.random()*(max-min);
+        }
+
+        var drawScore = function(){
+            ctx.font = "700px flat";
+            ctx.fillStyle = '#E58C8A';
+            ctx.fillText(score, game.width/2- 200, game.height/2);
+
+            
+        }
+
+        var gw = {};
+        
+        var gameWindowInit = function(){
+            gw = {
+                xLeft: 0 - game.width*0.30,
+                xRight: game.width*0.66,
+                yGeneral: game.height*0.80,
+                width: game.width* 0.60,
+                height: 100
+            }
+        }
+
+        var drawWindow = function(){
+
+            ctx.fillStyle = "#E58C8A";
+            ctx.fillRect(gw.xLeft, gw.yGeneral, gw.width, gw.height);
+            ctx.fillRect(gw.xRight, gw.yGeneral, gw.width, gw.height);
+        }
+
+        var updateWindow = function(){
+
+            // if (gw.xRight <= game.width && gw.xLeft <= 0)
+                this.x += -1*(accel.x * 10) + (offset.x * 10);
+        }
+
+        game.update = function(){
+            shapeStack.forEach(function(shape, index, array){
+                shape.move();
+                if (shape.isOutside()){
+                    delete array[index];
+                    console.log("shape deleted");
+                }
+            });
+
+            updateWindow();
+
+        }
+
+        game.draw = function(){
+            ctx.clearRect(0, 0, game.width, game.height);
+            drawScore();
+            drawWindow();
+
+            shapeStack.forEach(function(shape, index, array){
+                shape.draw(ctx);
+            })
+
+        }
+
+        game.loop = function(){
+            game.update();
+            game.draw();
+        }
+
+        game.endGame = function(){
+
+            ctx.clearRect(0, 0, game.width, game.height);
+            drawScore();
+            
+        }
+
+        game.stop = function(){
+            console.log("game stopped");
+
+            clearInterval(game.id);
+
+            var endGameId = setInterval(game.endGame, 1000/60);
+
+
+
+            $("#taunt").empty();
+            $("#taunt").append(taunts[Math.floor(Math.random()*taunts.length)]);
+            $("#score").empty();
+            $("#score").append("SCORE: " + score + "<br> BEST: " + highScore);
+
+            setTimeout(function(){
+
+                clearInterval(endGameId);
+                score=0;
+                changeState(states.GAME_OVER);
+            
+            }, 3000)
+        }
+
+        var changeState = function(state){
+            $(document.body).trigger("lb:stateChange", state);
+        }
+
+        $(document).on("lb:stateChange", function(e, currentState){
+            $(".item").hide();
+            if (currentState == states.MAIN_MENU){
+                $("#main-menu").show();
+                $("#viewport").attr("content", "user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height");
+            }
+            else if (currentState == states.GAME){
+                $("#game").show();
+                $("#viewport").attr("content", "");
+                game.start();
+            }
+            else if (currentState == states.GAME_OVER){
+                $("#game-over").show();
+                $("#viewport").attr("content", "user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height");
+            }
+        });
+
+        $("#start").on("click", function(){
+            changeState(states.GAME);
+        });
+
+        $("#leaderboards").on("click", function(){
+
+        })
+
+        $("#restart").on("click", function(){
+            changeState(states.GAME);
+        })
+
+        $("#home").on("click", function(){
+            changeState(states.MAIN_MENU);
+        })
+
+        changeState(states.MAIN_MENU);
+        }
+
+    });
+
+
+    </script>
+    <body>
+        <canvas class="item" id="game"></canvas>
+        <div class="item" id="game-over">
+            <h1 ><span id="taunt"> </span></h1> 
+            <button class="btn m-item" style="background: #E58C8A;" id="score">
+                <span id="score"></span> 
+            </button>
+            <div class="btn-row">
+                
+                <button class="btn b-item" style="background: #E58C8A; float:left;" id="home" >
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+                        <path d="M32 19l-6-6v-9h-4v5l-6-6-16 16v1h4v10h10v-6h4v6h10v-10h4z" fill="#ecf0f1"></path>
+                    </svg>
+                </button>
+                <button class="btn b-item" style="background: #E58C8A; float:right;" id="restart" >
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+                        <path d="M32 12h-12l4.485-4.485c-2.267-2.266-5.28-3.515-8.485-3.515s-6.219 1.248-8.485 3.515c-2.266 2.267-3.515 5.28-3.515 8.485s1.248 6.219 3.515 8.485c2.267 2.266 5.28 3.515 8.485 3.515s6.219-1.248 8.485-3.515c0.189-0.189 0.371-0.384 0.546-0.583l3.010 2.634c-2.933 3.349-7.239 5.464-12.041 5.464-8.837 0-16-7.163-16-16s7.163-16 16-16c4.418 0 8.418 1.791 11.313 4.687l4.687-4.687v12z" fill="#ecf0f1"></path>
+                    </svg>
+                </button>
+            </div>
+            
+        </div>
+        <div class="item" id="main-menu"> 
+            <h1>SHAPE DROP</h1>
+            <button class="btn m-item" style="background: #E58C8A;" id="instructions">
+                Let the all the shapes pass by tilting, except the ones that are currently indicated.
+            </button>
+            <div class="btn-row">
+                <button class="btn b-item" style="background: #E58C8A; float:left;" id="start" >
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+                        <path d="M6 4l20 12-20 12z" fill="#ecf0f1"></path>
+                    </svg>
+                </button>
+                <button class="btn b-item" style="background: #E58C8A; float:right;" id="leaderboards">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+                        <path d="M26 6v-4h-20v4h-6v4c0 3.314 2.686 6 6 6 0.627 0 1.232-0.096 1.801-0.275 1.443 2.063 3.644 3.556 6.199 4.075v6.2h-2c-2.209 0-4 1.791-4 4h16c0-2.209-1.791-4-4-4h-2v-6.2c2.555-0.519 4.756-2.012 6.199-4.075 0.568 0.179 1.173 0.275 1.801 0.275 3.314 0 6-2.686 6-6v-4h-6zM6 13.625c-1.999 0-3.625-1.626-3.625-3.625v-2h3.625v2c0 1.256 0.232 2.457 0.655 3.565-0.213 0.039-0.431 0.060-0.655 0.060zM29.625 10c0 1.999-1.626 3.625-3.625 3.625-0.224 0-0.442-0.021-0.655-0.060 0.423-1.107 0.655-2.309 0.655-3.565v-2h3.625v2z" fill="#ecf0f1">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- <button class="m-item" style="background: #2a2a2a;" id="build"></button> -->
+            
+        <audio src="sounds/death.wav" controls="none" id="sound-death" hidden/>
+        </div>
+    </body>
+</html>

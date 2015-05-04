@@ -1,0 +1,82 @@
+@font-face {
+    font-family: flat;
+    src: url(fonts/Lovelo-Line-Light.otf);
+}
+@font-face {
+    font-family: console;
+    src: url(fonts/consolas.ttf);
+}
+html,
+body {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background-color: #EEC0C6;
+}
+
+#instructions {
+    font-size: 20px;
+}
+#build {
+    font-size: 12px;
+    font-family: console;
+    text-align: left;
+}
+
+#game {
+    image-rendering: optimizeSpeed; // Older versions of FF
+    image-rendering: -moz-crisp-edges; // FF 6.0+
+    image-rendering: -webkit-optimize-contrast; // Webkit
+    image-rendering: -o-crisp-edges; // OS X & Windows Opera (12.02+)
+    image-rendering: optimize-contrast; // Possible future browsers.
+    -ms-interpolation-mode: nearest-neighbor; // IE
+}
+
+h1 {
+    display: block;
+    text-align: center;
+    margin-top: 20%;
+    color: #E58C8A;
+    font-family: flat;
+    font-size: 70px;
+    font-weight: 400;
+}
+
+
+.btn {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0px;
+    font-family: console;
+    font-weight: 100;
+    color: #ffffff;
+    font-size: 30px;
+    background: #E58C8A;
+    padding: 15px 15px;
+    border: solid #E58C8A 0px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-row {
+    width:80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.b-item {
+    margin-top: 15px;
+    width:48%;
+    margin-left: auto;
+    margin-right: auto;
+
+
+}
+
+.m-item {
+    display: block;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}

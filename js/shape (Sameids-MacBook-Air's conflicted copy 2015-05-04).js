@@ -13,13 +13,13 @@ var Shape = function (){
 	var min = game.width* 0.2;
 	var max = game.width* 0.8;
 
-	this.push = Math.floor(min + Math.random()*(max-this.width-min));
+	this.push = randomInt(min,max);
 
 
 	this.colors = ["#80FF72", "#FFF07C", "#7EE8FA"];
 	this.color = this.colors[Math.floor(0 + Math.random()*(3-0))]
 
-	 this.horizontalStretch = Math.floor(min + Math.random()*(max-min));
+	 this.horizontalStretch = randomInt(100, 300);
 
 
 }

@@ -3,7 +3,7 @@ var Shape = function (){
 	this.width = 100;
 	this.height = 100;
 	this.radius = 50;
-	this.speed = 5;
+	this.speed = 10;
 	this.x = 0;
 	this.y = -100;
 

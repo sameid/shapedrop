@@ -63,6 +63,10 @@
         }
 
         var shapeStack = [];
+        var clearStacks = function(){
+            shapeStack = [];
+        }
+
 
         var score = 0;
 
@@ -285,6 +289,11 @@
 
             ctx.clearRect(0, 0, game.width, game.height);
             drawScore();
+            drawWindow();
+
+            shapeStack.forEach(function(shape, index, array){
+                shape.draw(ctx);
+            })
             
         }
 
@@ -306,7 +315,9 @@
 
             setTimeout(function(){
                 clearInterval(endGameId);
-                score=0;
+                score = 0;
+
+                clearStacks();
                 changeState(states.GAME_OVER);
             
             }, 3000)
@@ -379,7 +390,7 @@
             
         </div>
         <div class="item" id="main-menu"> 
-            <h1>SHAPE DROP</h1>
+            <h1>SHAPE DASH</h1>
             <button class="btn m-item" style="background: #E58C8A;" id="instructions">
                 Let the all the shapes pass by tilting, except the ones that are currently indicated.
             </button>

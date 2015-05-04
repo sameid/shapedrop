@@ -174,6 +174,16 @@
                 gw.xLeft += -1*(accel.x * 10) + (offset.x * 10);
                 gw.xRight += -1*(accel.x * 10) + (offset.x * 10);
             }
+
+            if (gw.xLeft > 0){
+                gw.xLeft = 0;
+            }
+
+            if (gw.xRight > game.width){
+                gw.xRight = game.width;
+            }
+
+
         }
 
         game.update = function(){

@@ -19,7 +19,7 @@ var Shape = function (){
 	this.colors = ["#80FF72", "#FFF07C", "#7EE8FA"];
 	this.color = this.colors[Math.floor(0 + Math.random()*(3-0))]
 
-	 this.horizontalStretch = randomInt(100, 200);
+	 this.horizontalStretch = randomInt(100, 250);
 
 
 }

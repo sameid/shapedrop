@@ -22,7 +22,7 @@ Shape.prototype.draw = function(ctx){
 	// ctx.rotate(20*Math.PI/180);
 
     ctx.shadowColor = 'black';
-    ctx.shadowBlur = 20;
+    ctx.shadowBlur = 5;
     ctx.shadowOffsetX = 0;
     ctx.shadowOffsetY = 0;
 	ctx.fillRect(this.x,this.y,this.width,this.height);

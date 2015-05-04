@@ -214,7 +214,6 @@
 
         var collision = function(r1, r2){
 
-            if (r2.type == "1"){
                 if (r1.xLeft < r2.x + r2.width &&
                     r1.xLeft + r1.width > r2.x &&
                     r1.yGeneral < r2.y + r2.height &&
@@ -228,22 +227,6 @@
                     r1.height + r1.yGeneral > r2.y){
                     return true;
                 }   
-            }
-            else if (r2.type == "2"){
-                if (r1.xLeft < r2.x-r2.radius + r2.width &&
-                    r1.xLeft + r1.width > r2.x-r2.radius &&
-                    r1.yGeneral < r2.y-r2.radius + r2.height &&
-                    r1.height + r1.yGeneral > r2.y-r2.radius){
-                    return true;
-                }
-
-                if (r1.xRight < r2.x - r2.radius + r2.width &&
-                    r1.xRight + r1.width > r2.x - r2.radius  &&
-                    r1.yGeneral < r2.y - r2.radius + r2.height &&
-                    r1.height + r1.yGeneral > r2.y - r2.radius ){
-                    return true;
-                }   
-            }
 
 
 
